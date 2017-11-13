@@ -48,8 +48,8 @@ if (isset($_GET['addform']))
     $s = $pdo->prepare($sql);
     $s->bindValue(':name', $_POST['name']);
     $s->bindValue(':intervalm', $_POST['intervalm']);
-	  $s->bindValue(':minm', $_POST['minm']);
-	  $s->bindValue(':maxm', $_POST['maxm']);
+	  $s->bindValue(':minm', str_replace(',', '.', $_POST['minm']));
+	  $s->bindValue(':maxm', str_replace(',', '.', $_POST['maxm']));
 	  $s->bindValue(':typeid', $_POST['typeid']);
 	  $s->bindValue(':unitid', $_POST['unitid']);
 	  $s->bindValue(':manufacturerid', $_POST['manufacturerid']);
@@ -125,8 +125,8 @@ if (isset($_GET['editform']))
     $s->bindValue(':id', $_POST['id']);
     $s->bindValue(':name', $_POST['name']);
     $s->bindValue(':intervalm', $_POST['intervalm']);
-	  $s->bindValue(':minm', $_POST['minm']);
-	  $s->bindValue(':maxm', $_POST['maxm']);
+	  $s->bindValue(':minm', str_replace(',', '.', $_POST['minm']));
+	  $s->bindValue(':maxm', str_replace(',', '.', $_POST['maxm']));
 	  $s->bindValue(':typeid', $_POST['typeid']);
 	  $s->bindValue(':unitid', $_POST['unitid']);
 	  $s->bindValue(':manufacturerid', $_POST['manufacturerid']);
@@ -203,10 +203,12 @@ catch (PDOException $e)
   include 'error.html.php';
   exit();
 }
+
 foreach ($result as $row) {
-  $devicetypes[] = array('id' => $row['id'], 'name' => $row['name'],
+	$devicetypes[] = array('id' => $row['id'], 'name' => $row['name'],
                     'minm' => $row['minm'],'maxm' => $row['maxm'], 'typeid' => $row['typeid']);
 }
 $devicetypes = array_msort($devicetypes, array('typeid' => SORT_ASC, 'name' => SORT_ASC));
+
 
 include 'devicetype.html.php';
